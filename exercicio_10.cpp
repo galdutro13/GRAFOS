@@ -1,7 +1,3 @@
-//
-// Created by galdu on 25/07/2023.
-//
-
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -29,17 +25,12 @@ struct GRAFO {
 
     //construtor para instanciar um GRAFO com início de valor i.
     explicit GRAFO(int i, int flag_value = 0, int via_value = 0, int distancia_value = 0)
-            : flag(flag_value), via(via_value), distancia(distancia_value) {
-        inicio = new NO(i, nullptr);
+            : flag(flag_value), via(via_value), distancia(distancia_value), inicio(nullptr) {
     }
 
 };
 
-NO init2no(int adj2) {
-    return NO(adj2, nullptr);
-}
-
-std::vector<GRAFO> init2grafo(int tamanho) {
+std::vector<GRAFO> init2grafo() {
     std::vector<GRAFO> grafo(tamanho + 1);
     for(int i = 0; auto& g : grafo) {
         g = GRAFO(i);
@@ -74,8 +65,13 @@ void recursive2insert(NO* busca, NO* adjacencia) {
     busca->prox = adjacencia;
 }
 
-void insert2grafo(std::vector<GRAFO> grafo, int inicio, int aresta) {
+void insert2grafo(std::vector<GRAFO>& grafo, int inicio, int aresta) {
     NO* adjacencia = new NO(aresta, nullptr);
+
+    if(grafo[inicio].inicio == nullptr) {
+        grafo[inicio].inicio = adjacencia;
+        return;
+    }
 
     if(grafo[inicio].inicio->prox != nullptr) {
         recursive2insert(grafo[inicio].inicio->prox, adjacencia);
@@ -85,7 +81,7 @@ void insert2grafo(std::vector<GRAFO> grafo, int inicio, int aresta) {
     grafo[inicio].inicio->prox = adjacencia;
 }
 
-void delete2aresta(std::vector<GRAFO> grafo, int inicio, int aresta) {
+void delete2aresta(std::vector<GRAFO>& grafo, int inicio, int aresta) {
     NO* busca = grafo[inicio].inicio;
 
     NO* resultado = recursive2search(busca, aresta);
@@ -102,14 +98,14 @@ void delete2aresta(std::vector<GRAFO> grafo, int inicio, int aresta) {
     }
 }
 
-bool existe2aresta(std::vector<GRAFO> grafo, int inicio, int aresta) {
+bool existe2aresta(std::vector<GRAFO>& grafo, int inicio, int aresta) {
     NO* busca = grafo[inicio].inicio;
     if(recursive2search(busca, aresta) == nullptr)
         return false;
     else return true;
 }
 
-void busca2prof(std::vector<GRAFO> grafo, int i, int* count) {
+void busca2prof(std::vector<GRAFO>& grafo, int i, int* count) {
     grafo[i].flag = 1;
 
     NO* p = grafo[i].inicio;
@@ -117,15 +113,15 @@ void busca2prof(std::vector<GRAFO> grafo, int i, int* count) {
         if (grafo[p->adj].flag == 0) {
             grafo[p->adj].inicio->id = 777;
             busca2prof(grafo, p->adj, count);
-            (*count)++;
         }
         p = p->prox;
     }
     grafo[i].flag = 2;
+    (*count)++;
 
 }
 
-void busca2lar(std::vector<GRAFO> grafo, int i) {
+void busca2lar(std::vector<GRAFO>& grafo, int i) {
     std::queue<int> fila;
     grafo[i].flag = 1;
 
@@ -149,15 +145,28 @@ void busca2lar(std::vector<GRAFO> grafo, int i) {
 }
 
 NO* find_suspeito(std::vector<GRAFO> grafo, int codspam) {
-    std::vector<NO> nos_afetados(tamanho + 1);
-    int x = tamanho + 1;
-    return nullptr;
+    std::vector<int> nos_afetados(tamanho + 1);
+    std::queue<NO> nos_suspeitos;
+
+    for(int i = 1; auto& g : grafo) {
+        if(g.inicio->id == 777)
+             nos_afetados[i] = g.inicio->adj;
+        i++;
+    }
+
+    for (int i = 1; auto& g : grafo) {
+        if(g.inicio->id == 0) {
+
+            int valadj = g.inicio->adj;
+        }
+    }
+
 }
 
 int main() {
     tamanho = 5;
 
-    std::vector<GRAFO> grafo = init2grafo(tamanho.value());
+    std::vector<GRAFO> grafo = init2grafo();
 
     insert2grafo(grafo, 2, 5);
     delete2aresta(grafo, 2, 5);
