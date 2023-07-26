@@ -44,11 +44,9 @@ void zera2flag(std::vector<GRAFO> grafo) {
 }
 
 NO* recursive2search(NO* busca, int objetivo) {
-    if(busca->prox == nullptr)
-        return nullptr;
 
-    if(busca->prox->adj != objetivo) {
-        return recursive2search(busca, objetivo);
+    if(busca->adj != objetivo && busca->prox == nullptr) {
+        return recursive2search(busca->prox, objetivo);
     }
 
     //retorna o nó atual, e não o proximo, para facilitar as operações como deleção de aresta, etc.
@@ -56,7 +54,7 @@ NO* recursive2search(NO* busca, int objetivo) {
 }
 
 void recursive2insert(NO* busca, NO* adjacencia) {
-    if(busca->prox != nullptr) {
+    if(busca->prox != nullptr && busca->prox->adj < tamanho + 1) {
         recursive2insert(busca->prox, adjacencia);
         return;
     }
@@ -71,7 +69,9 @@ void insert2grafo(std::vector<GRAFO>& grafo, int inicio, int aresta) {
         return;
     }
 
-    if(grafo[inicio].inicio->prox != nullptr) {
+    if(grafo[inicio].inicio->prox != nullptr &&
+        grafo[inicio].inicio->adj < tamanho + 1) {
+
         recursive2insert(grafo[inicio].inicio->prox, adjacencia);
         return;
     }
@@ -85,13 +85,14 @@ void delete2aresta(std::vector<GRAFO>& grafo, int inicio, int aresta) {
     NO* resultado = recursive2search(busca, aresta);
 
     if(resultado != nullptr) {
-        if(resultado->prox->prox != nullptr) {
-            NO* prox = resultado->prox->prox;
-            delete resultado->prox;
-            resultado->prox = prox;
+        if(resultado->prox != nullptr) {
+            int prox = resultado->prox->adj;
+            delete resultado;
+
+            insert2grafo(grafo, inicio, prox);
         } else {
-            delete resultado->prox;
-            resultado->prox = nullptr;
+            delete resultado;
+            grafo[inicio].inicio = nullptr;
         }
     }
 }
@@ -178,6 +179,9 @@ int main() {
     busca2prof(grafo, 3, &count);
 
     zera2flag(grafo);
+    count = 0;
+
+    cycleDetection(grafo, count);
 
     return 0;
 }
