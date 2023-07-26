@@ -8,3 +8,5 @@ add_executable(GRAFOS main.cpp LateConst.h)
 add_executable(EMAIL_SPAM exercicio_10.cpp LateConst.h)
 
 add_executable(DETECTOR_DE_CICLOS cycle_detector.cpp LateConst.h)
+
+add_executable(KOSARAJU kosaraju.cpp LateConst.h)
