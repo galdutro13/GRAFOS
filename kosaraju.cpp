@@ -197,16 +197,51 @@ std::vector<int> Kosaraju(std::vector<GRAFO>& grafo) {
 }
 
 int main() {
-    tamanho = 5;
+    tamanho = 15;
 
     std::vector<GRAFO> grafo = init2grafo();
 
+    insert2grafo(grafo, 1, 5);
+    insert2grafo(grafo, 2, 1);
+    insert2grafo(grafo, 2, 14);
     insert2grafo(grafo, 2, 5);
-    delete2aresta(grafo, 2, 5);
-
-    insert2grafo(grafo, 2, 5);
-    insert2grafo(grafo, 3, 2);
+    insert2grafo(grafo, 3, 11);
+    insert2grafo(grafo, 3, 12);
     insert2grafo(grafo, 3, 5);
+    insert2grafo(grafo, 3, 7);
+    insert2grafo(grafo, 4, 2);
+    insert2grafo(grafo, 4, 1);
+    insert2grafo(grafo, 4, 12);
+    insert2grafo(grafo, 5, 13);
+    insert2grafo(grafo, 6, 1);
+    insert2grafo(grafo, 7, 13);
+    insert2grafo(grafo, 7, 11);
+    insert2grafo(grafo, 7, 6);
+    insert2grafo(grafo, 7, 4);
+    insert2grafo(grafo, 8, 12);
+    insert2grafo(grafo, 8, 4);
+    insert2grafo(grafo, 9, 3);
+    insert2grafo(grafo, 9, 2);
+    insert2grafo(grafo, 9, 1);
+    insert2grafo(grafo, 10, 3);
+    insert2grafo(grafo, 11, 6);
+    insert2grafo(grafo, 11, 13);
+    insert2grafo(grafo, 12, 8);
+    insert2grafo(grafo, 12, 11);
+    insert2grafo(grafo, 12, 2);
+    insert2grafo(grafo, 12, 1);
+    insert2grafo(grafo, 12, 9);
+    insert2grafo(grafo, 12, 10);
+    insert2grafo(grafo, 12, 5);
+    insert2grafo(grafo, 13, 7);
+    insert2grafo(grafo, 13, 2);
+    insert2grafo(grafo, 13, 9);
+    insert2grafo(grafo, 13, 6);
+    insert2grafo(grafo, 14, 6);
+    insert2grafo(grafo, 14, 13);
+    insert2grafo(grafo, 14, 9);
+    insert2grafo(grafo, 14, 5);
+
 
     int count = 0;
     busca2prof(grafo, 3, &count);
@@ -214,6 +249,8 @@ int main() {
     zera2flag(grafo);
 
     std::vector<GRAFO> transp = transposta(grafo);
+
+    std::vector<int> rekosa = Kosaraju(grafo);
 
     return 0;
 }
